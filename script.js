@@ -42,6 +42,30 @@ class button {
 	}
 }
 
+class boxes{
+  constructor(x, y, w, h, r, g, b, s, n, c, sp){
+    this.x = x
+    this.y = y
+    this.w = w
+    this.h = h
+    this.Color = color (r,g,b)
+    this.Stroke = s
+    this.Number = n
+    this.Column = c
+    this.Space = sp
+
+    this.pressed = false
+		this.inside = false
+  }
+  update(){
+    fill(this.Color)
+    stroke(this.Stroke)
+    for(let i = 0; i < this.Number; i++){
+      rect(this.x + (i % this.Column) * this.Space, this.y + Math.floor(i / this.Column) * this.Space, this.w, this.h) 
+    } 
+  }
+}
+
 function setup() {
   const width = 900
   const height = 475
@@ -55,11 +79,17 @@ function setup() {
   normalP = new button(width/2, height/2 + 80, 120, 30, "Normal", 101, 168, 86, 0)
   hardP = new button(width/2, height/2 + 140, 120, 30, "Hard", 101, 168, 86, 0)
   twoP = new button(width/2, height/2 + 100, 120, 30, "2 Players", 101, 168, 86, 0)
-  easyPs = new button(width/2, height/2 + 20, 120, 30, "Easy", 101, 168, 86, 0)
-  normalPs = new button(width/2, height/2 + 70, 120, 30, "Normal", 101, 168, 86, 0)
-  hardPs = new button(width/2, height/2 + 140, 120, 30, "Hard", 101, 168, 86, 0)
+  
+  easyPs = new button(width/2, height/2, 120, 30, "Easy", 101, 168, 86, 0)
+  normalPs = new button(width/2, height/2 + 63, 120, 30, "Normal", 101, 168, 86, 0)
+  hardPs = new button(width/2, height/2 + 127, 120, 30, "Hard", 101, 168, 86, 0)
+  
   instruction = new button(width/2, height/2 + 150, 120, 30, "Instruction", 101, 168, 86, 0)
   back = new button(width/2 - 300, height/2 - 180, 120, 30, "Back", 101, 168, 86, 0)
+
+  easyBoxP = new boxes(width/2 - 100, height/2 - 100, 50, 50, 0, 0, 0, 0, 16, 4, 70)
+  normalBoxP = new boxes(width/2 - 100, height/2 - 100, 50, 50, 0, 0, 0, 0, 16, 4, 70)
+  hardBoxP = new boxes(width/2 - 100, height/2 - 100, 50, 50, 0, 0, 0, 0, 16, 4, 70)
 }
 
 function backDrop(){
@@ -167,22 +197,79 @@ function draw() {
         menu = 0
       }
       break
-    case 4:
+    case 4: //easy (1 player)
+    backDrop()
+
+      easyBoxP.update()
+      back.update()
+      back.render()
+      if(back.pressed === true){
+        menu = 0
+      }
+      break
+    case 5: //normal (1 player)
+    backDrop()
+
+      normalBoxP.update()
+      back.update()
+      back.render()
+      if(back.pressed === true){
+        menu = 0
+      }
+      break
+    case 6: //hard (1 player)
+    backDrop()
+
+      hardBoxP.update()
+      back.update()
+      back.render()
+      if(back.pressed === true){
+        menu = 0
+      }
+      break
+    case 7: //easy (2 players)
+    backDrop()
+
+      back.update()
+      back.render()
+      if(back.pressed === true){
+        menu = 0
+      }
+      break
+    case 8: //normal (2 players)
+    backDrop()
+
+      back.update()
+      back.render()
+      if(back.pressed === true){
+        menu = 0
+      }
+      break
+    case 9: //hard (2 players)
+    backDrop()
+
+      back.update()
+      back.render()
+      if(back.pressed === true){
+        menu = 0
+      }
+      break
+    case 10: //easy result (1 player)
+     backDrop()
+      break
+    case 11: //normal result (1 player)
+     backDrop()
+      break
+    case 12: //hard result (1 player)
+     backDrop()
+      break
+    case 13: //easy result (2 players)
+     backDrop()
+      break
+    case 14: //normal result (2 players)
     backDrop()
       break
-    case 5:
-    backDrop()
-      break
-    case 6:
-    backDrop()
-      break
-    case 7:
-    backDrop()
-      break
-    case 8:
-    backDrop()
-      break
-    case 9:
+    case 15: //hard result (2 players)
     backDrop()
       break
   }
