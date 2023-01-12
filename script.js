@@ -92,11 +92,55 @@ function setup() {
   hardBoxP = new boxes(width/2 - 100, height/2 - 100, 50, 50, 0, 0, 0, 0, 16, 4, 70)
 }
 
+function reset(){
+  heart = 0
+}
+
 function backDrop(){
   rectMode(CENTER)
   fill(255, 245, 112)
   noStroke()
   rect(width/2, height/2, 800, 475)
+}
+
+function life(){
+  switch(heart){
+    case 0:
+noStroke()
+	fill(217,25,11)
+ circle(width/2, height/2, 20)
+	triangle(width/2 - 10, height/2 + 4, width/2 + 10, height/2, width/2 + 10, height/2 + 20)
+      circle(width/2 + 20, height/2, 20)
+	triangle(width/2 + 10, height/2, width/2 + 30, height/2 + 4, width/2 + 10, height/2 + 20)
+      break
+    case 1:
+
+      break
+    case 2:
+
+      break
+    case 3:
+
+      break
+    case 4:
+
+      break
+    case 5:
+
+      break
+    case 6:
+
+      break
+    case 7:
+
+      break
+    case 8:
+
+      break
+    case 9:
+
+      break
+  }
 }
 
 function draw() {
@@ -145,6 +189,7 @@ function draw() {
         menu = 0
       }
       if(easyP.pressed === true){
+        reset()
         menu = 4
       }
       if(normalP.pressed === true){
@@ -200,6 +245,7 @@ function draw() {
     case 4: //easy (1 player)
     backDrop()
 
+      life()
       easyBoxP.update()
       back.update()
       back.render()
