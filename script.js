@@ -66,6 +66,27 @@ class boxes{
   }
 }
 
+class Hearts{
+	constructor(x, y, radius, r, g, b, n, s){
+		this.x = x
+		this.y = y
+		this.radius = radius
+		this.Color = color(r,g,b)
+		this.number = n
+		this.space = s
+	}
+	update(){
+		fill(this.Color)
+		noStroke()
+		for(let i = 0; i < this.number; i++){
+		circle(this.x + (i % this.number) * this.space, this.y, this.radius)
+			triangle(this.x - this.radius/2 + (i % this.number) * this.space, this.y + this.radius/5, this.x + this.radius/2 + (i % this.number) * this.space, this.y, this.x + this.radius/2 + (i % this.number) * this.space, this.y + this.radius)
+		circle(this.x + this.radius + (i % this.number) * this.space, this.y, this.radius)
+			triangle(this.x + this.radius/2 + (i % this.number) * this.space, this.y, this.x + this.radius + this.radius/2 + (i % this.number) * this.space, this.y + this.radius/5, this.x + this.radius/2 + (i % this.number) * this.space, this.y + this.radius)
+		}
+	}
+}
+
 function setup() {
   const width = 900
   const height = 475
@@ -90,6 +111,12 @@ function setup() {
   easyBoxP = new boxes(width/2 - 100, height/2 - 100, 50, 50, 0, 0, 0, 0, 16, 4, 70)
   normalBoxP = new boxes(width/2 - 100, height/2 - 100, 50, 50, 0, 0, 0, 0, 16, 4, 70)
   hardBoxP = new boxes(width/2 - 100, height/2 - 100, 50, 50, 0, 0, 0, 0, 16, 4, 70)
+
+  OneHeart = new Hearts(width/2 - 103, height/2 - 180, 20, 217, 25, 11, 1, 50)
+  TwoHearts = new Hearts(width/2 - 103, height/2 - 180, 20, 217, 25, 11, 2, 50)
+  ThreeHearts = new Hearts(width/2 - 103, height/2 - 180, 20, 217, 25, 11, 3, 50)
+  FourHearts = new Hearts(width/2 - 103, height/2 - 180, 20, 217, 25, 11, 4, 50)
+  FiveHearts = new Hearts(width/2 - 103, height/2 - 180, 20, 217, 25, 11, 5, 50)
 }
 
 function reset(){
@@ -106,38 +133,21 @@ function backDrop(){
 function life(){
   switch(heart){
     case 0:
-noStroke()
-	fill(217,25,11)
- circle(width/2, height/2, 20)
-	triangle(width/2 - 10, height/2 + 4, width/2 + 10, height/2, width/2 + 10, height/2 + 20)
-      circle(width/2 + 20, height/2, 20)
-	triangle(width/2 + 10, height/2, width/2 + 30, height/2 + 4, width/2 + 10, height/2 + 20)
+FiveHearts.update()
       break
     case 1:
-
+FourHearts.update()
       break
     case 2:
-
+ThreeHearts.update()
       break
     case 3:
-
+TwoHearts.update()
       break
     case 4:
-
+OneHeart.update()
       break
     case 5:
-
-      break
-    case 6:
-
-      break
-    case 7:
-
-      break
-    case 8:
-
-      break
-    case 9:
 
       break
   }
