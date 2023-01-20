@@ -42,30 +42,6 @@ class button {
 	}
 }
 
-class boxes{
-  constructor(x, y, w, h, r, g, b, s, n, c, sp){
-    this.x = x
-    this.y = y
-    this.w = w
-    this.h = h
-    this.Color = color (r,g,b)
-    this.Stroke = s
-    this.Number = n
-    this.Column = c
-    this.Space = sp
-
-    this.pressed = false
-		this.inside = false
-  }
-  update(){
-    fill(this.Color)
-    stroke(this.Stroke)
-    for(let i = 0; i < this.Number; i++){
-      rect(this.x + (i % this.Column) * this.Space, this.y + Math.floor(i / this.Column) * this.Space, this.w, this.h) 
-    } 
-  }
-}
-
 class Hearts{
 	constructor(x, y, radius, r, g, b, n, s){
 		this.x = x
@@ -108,9 +84,13 @@ function setup() {
   instruction = new button(width/2, height/2 + 150, 120, 30, "Instruction", 101, 168, 86, 0)
   back = new button(width/2 - 300, height/2 - 180, 120, 30, "Back", 101, 168, 86, 0)
 
-  easyBoxP = new boxes(width/2 - 100, height/2 - 100, 50, 50, 0, 0, 0, 0, 16, 4, 70)
-  normalBoxP = new boxes(width/2 - 100, height/2 - 100, 50, 50, 0, 0, 0, 0, 16, 4, 70)
-  hardBoxP = new boxes(width/2 - 100, height/2 - 100, 50, 50, 0, 0, 0, 0, 16, 4, 70)
+  Do = new button(width/2 - 110, height/2 + 100, 40, 40, "C", 101, 168, 86, 0)
+  Re = new button(width/2 - 40, height/2 + 100, 40, 40, "D", 101, 168, 86, 0)
+  Mi = new button(width/2 + 40, height/2 + 100, 40, 40, "E", 101, 168, 86, 0)
+  Fa = new button(width/2 + 110, height/2 + 100, 40, 40, "F", 101, 168, 86, 0)
+  Sol = new button(width/2 - 75, height/2 + 150, 40, 40, "G", 101, 168, 86, 0)
+  La = new button(width/2, height/2 + 150, 40, 40, "A", 101, 168, 86, 0)
+  Ti = new button(width/2 + 75, height/2 + 150, 40, 40, "B", 101, 168, 86, 0)
 
   OneHeart = new Hearts(width/2 - 103, height/2 - 180, 20, 217, 25, 11, 1, 50)
   TwoHearts = new Hearts(width/2 - 103, height/2 - 180, 20, 217, 25, 11, 2, 50)
@@ -121,6 +101,10 @@ function setup() {
 
 function reset(){
   heart = 0
+
+  e = 0
+  
+  died = false
 }
 
 function backDrop(){
@@ -128,6 +112,36 @@ function backDrop(){
   fill(255, 245, 112)
   noStroke()
   rect(width/2, height/2, 800, 475)
+}
+
+function easyOne(){
+  switch(e){
+    case 0:
+
+      break
+      case 1:
+
+      break
+      case 2:
+
+      break
+      case 3:
+      Do.update()
+      Do.render()
+       Re.update()
+      Re.render()
+       Mi.update()
+      Mi.render()
+       Fa.update()
+      Fa.render()
+       Sol.update()
+      Sol.render()
+       La.update()
+      La.render()
+       Ti.update()
+      Ti.render()
+      break
+  }
 }
 
 function life(){
@@ -142,7 +156,7 @@ FourHearts.update()
 ThreeHearts.update()
       break
     case 3:
-TwoHearts.update()
+TwoHearts.update() 
       break
     case 4:
 OneHeart.update()
@@ -203,9 +217,11 @@ function draw() {
         menu = 4
       }
       if(normalP.pressed === true){
+        reset()
         menu = 5
       }
       if(hardP.pressed === true){
+        reset()
         menu = 6
       }
       break
@@ -229,12 +245,15 @@ function draw() {
         menu = 0
       }
       if(easyPs.pressed === true){
+        reset()
         menu = 7
       }
       if(normalPs.pressed === true){
+        reset()
         menu = 8
       }
       if(hardPs.pressed === true){
+        reset()
         menu = 9
       }
       break
@@ -256,9 +275,17 @@ function draw() {
     backDrop()
 
       life()
-      easyBoxP.update()
+      easyOne()
       back.update()
       back.render()
+      
+      if(heart > 4){
+        died = true
+        e = 3
+      }
+      if(heart > 4 && died === true){
+        menu = 10
+      }
       if(back.pressed === true){
         menu = 0
       }
@@ -266,7 +293,6 @@ function draw() {
     case 5: //normal (1 player)
     backDrop()
 
-      normalBoxP.update()
       back.update()
       back.render()
       if(back.pressed === true){
@@ -276,7 +302,6 @@ function draw() {
     case 6: //hard (1 player)
     backDrop()
 
-      hardBoxP.update()
       back.update()
       back.render()
       if(back.pressed === true){
