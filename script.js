@@ -62,13 +62,13 @@ class Hearts{
 		}
 	}
 }
-
+        
 function setup() {
   const width = 900
   const height = 475
   createCanvas(width, height);
   background(255);
-
+  
   menu = 0
 
   oneP = new button(width/2, height/2 + 50, 120, 30, "1 Player", 101, 168, 86, 0)
@@ -99,10 +99,23 @@ function setup() {
   FiveHearts = new Hearts(width/2 - 103, height/2 - 180, 20, 217, 25, 11, 5, 50)
 }
 
+function preload(){
+  MiddleDo = loadSound('scale/Middle-Do.mp3')
+  MiddleRe = loadSound('scale/Middle-Re.mp3')
+  MiddleMi = loadSound('scale/Middle-Mi.mp3')
+  MiddleFa = loadSound('scale/Middle-Fa.mp3')
+  MiddleSol = loadSound('scale/Middle-Sol.mp3')
+  MiddleLa = loadSound('scale/Middle-La.mp3')
+  MiddleSi = loadSound('scale/Middle-Si.mp3')
+  HighDo = loadSound('scale/High-Do.mp3')
+}
+
 function reset(){
   heart = 0
 
   e = 0
+
+  sound = 0
   
   died = false
 }
@@ -114,6 +127,38 @@ function backDrop(){
   rect(width/2, height/2, 800, 475)
 }
 
+function music(){
+  switch(sound){
+    case 0:
+
+      break
+      case 1:
+     MiddleDo.play()
+      break
+      case 2:
+      MiddleRe.play()
+      break
+      case 3:
+      MiddleMi.play()
+      break
+      case 4:
+    MiddleFa.play()
+      break
+      case 5:
+    MiddleSol.play()
+      break
+      case 6:
+     MiddleLa.play()
+      break
+      case 7:
+    MiddleSi.play()
+      break
+      case 8:
+    HighDo.play()
+      break
+  }
+}
+
 function easyOne(){
   switch(e){
     case 0:
@@ -123,7 +168,7 @@ function easyOne(){
 
       break
       case 2:
-
+     sound = Math.floor(random(1,9))
       break
       case 3:
       Do.update()
@@ -275,13 +320,13 @@ function draw() {
     backDrop()
 
       life()
+      music()
       easyOne()
       back.update()
       back.render()
       
       if(heart > 4){
-        died = true
-        e = 3
+        e = 2
       }
       if(heart > 4 && died === true){
         menu = 10
@@ -289,6 +334,10 @@ function draw() {
       if(back.pressed === true){
         menu = 0
       }
+       if(keyIsPressed){
+        heart = heart + 1
+      }
+     
       break
     case 5: //normal (1 player)
     backDrop()
