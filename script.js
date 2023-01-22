@@ -1,3 +1,5 @@
+let scales = []
+
 class button {
 	constructor(x,y,w,h,text,r,g,b,s) {
 		this.posX = x
@@ -84,10 +86,12 @@ function setup() {
   instruction = new button(width/2, height/2 + 150, 120, 30, "Instruction", 101, 168, 86, 0)
   back = new button(width/2 - 300, height/2 - 180, 120, 30, "Back", 101, 168, 86, 0)
 
-  Do = new button(width/2 - 110, height/2 + 100, 40, 40, "C", 101, 168, 86, 0)
-  Re = new button(width/2 - 40, height/2 + 100, 40, 40, "D", 101, 168, 86, 0)
-  Mi = new button(width/2 + 40, height/2 + 100, 40, 40, "E", 101, 168, 86, 0)
-  Fa = new button(width/2 + 110, height/2 + 100, 40, 40, "F", 101, 168, 86, 0)
+ready = new button(width/2, height/2 + 100, 120, 30, "Ready", 101, 168, 86, 0)
+  
+  Do = new button(width/2 - 110, height/2 + 80, 40, 40, "C", 101, 168, 86, 0)
+  Re = new button(width/2 - 40, height/2 + 80, 40, 40, "D", 101, 168, 86, 0)
+  Mi = new button(width/2 + 40, height/2 + 80, 40, 40, "E", 101, 168, 86, 0)
+  Fa = new button(width/2 + 110, height/2 + 80, 40, 40, "F", 101, 168, 86, 0)
   Sol = new button(width/2 - 75, height/2 + 150, 40, 40, "G", 101, 168, 86, 0)
   La = new button(width/2, height/2 + 150, 40, 40, "A", 101, 168, 86, 0)
   Ti = new button(width/2 + 75, height/2 + 150, 40, 40, "B", 101, 168, 86, 0)
@@ -100,24 +104,23 @@ function setup() {
 }
 
 function preload(){
-  MiddleDo = loadSound('scale/Middle-Do.mp3')
-  MiddleRe = loadSound('scale/Middle-Re.mp3')
-  MiddleMi = loadSound('scale/Middle-Mi.mp3')
-  MiddleFa = loadSound('scale/Middle-Fa.mp3')
-  MiddleSol = loadSound('scale/Middle-Sol.mp3')
-  MiddleLa = loadSound('scale/Middle-La.mp3')
-  MiddleSi = loadSound('scale/Middle-Si.mp3')
-  HighDo = loadSound('scale/High-Do.mp3')
+scales.push(loadSound('scale/Middle-Do.mp3'))
+ scales.push(loadSound('scale/Middle-Re.mp3'))
+  scales.push(loadSound('scale/Middle-Mi.mp3'))
+scales.push(loadSound('scale/Middle-Fa.mp3'))
+scales.push(loadSound('scale/Middle-Sol.mp3'))
+scales.push(loadSound('scale/Middle-La.mp3'))
+scales.push(loadSound('scale/Middle-Si.mp3'))
 }
 
 function reset(){
   heart = 0
 
   e = 0
-
-  sound = 0
   
   died = false
+
+  played = false
 }
 
 function backDrop(){
@@ -127,50 +130,26 @@ function backDrop(){
   rect(width/2, height/2, 800, 475)
 }
 
-function music(){
-  switch(sound){
-    case 0:
-
-      break
-      case 1:
-     MiddleDo.play()
-      break
-      case 2:
-      MiddleRe.play()
-      break
-      case 3:
-      MiddleMi.play()
-      break
-      case 4:
-    MiddleFa.play()
-      break
-      case 5:
-    MiddleSol.play()
-      break
-      case 6:
-     MiddleLa.play()
-      break
-      case 7:
-    MiddleSi.play()
-      break
-      case 8:
-    HighDo.play()
-      break
-  }
-}
-
 function easyOne(){
   switch(e){
     case 0:
-
+life()
       break
       case 1:
-
+    
       break
       case 2:
-     sound = Math.floor(random(1,9))
+      frameRate(8)
+      ready.update()
+      ready.render()
+       if(ready.pressed === true){
+        let randomScale = random(scales)
+    randomScale.play()
+    played = true
+      }
       break
       case 3:
+      frameRate(20)
       Do.update()
       Do.render()
        Re.update()
@@ -319,14 +298,15 @@ function draw() {
     case 4: //easy (1 player)
     backDrop()
 
-      life()
-      music()
       easyOne()
       back.update()
       back.render()
       
       if(heart > 4){
         e = 2
+      }
+      if(played === true){
+        e = 3
       }
       if(heart > 4 && died === true){
         menu = 10
