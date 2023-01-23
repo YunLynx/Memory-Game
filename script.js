@@ -104,6 +104,14 @@ ready = new button(width/2, height/2 + 100, 120, 30, "Ready", 101, 168, 86, 0)
 }
 
 function preload(){
+  scales.push(loadSound('scale/Low-Do.mp3'))
+  scales.push(loadSound('scale/Low-Re.mp3'))
+  scales.push(loadSound('scale/Low-Mi.mp3'))
+  scales.push(loadSound('scale/Low-Fa.mp3'))
+  scales.push(loadSound('scale/Low-Sol.mp3'))
+  scales.push(loadSound('scale/Low-La.mp3'))
+  scales.push(loadSound('scale/Low-Si.mp3'))
+  
 scales.push(loadSound('scale/Middle-Do.mp3'))
  scales.push(loadSound('scale/Middle-Re.mp3'))
   scales.push(loadSound('scale/Middle-Mi.mp3'))
@@ -111,6 +119,14 @@ scales.push(loadSound('scale/Middle-Fa.mp3'))
 scales.push(loadSound('scale/Middle-Sol.mp3'))
 scales.push(loadSound('scale/Middle-La.mp3'))
 scales.push(loadSound('scale/Middle-Si.mp3'))
+  
+  scales.push(loadSound('scale/High-Do.mp3'))
+  scales.push(loadSound('scale/High-Re.mp3'))
+  scales.push(loadSound('scale/High-Mi.mp3'))
+  scales.push(loadSound('scale/High-Fa.mp3'))
+  scales.push(loadSound('scale/High-Sol.mp3'))
+  scales.push(loadSound('scale/High-La.mp3'))
+  scales.push(loadSound('scale/High-Si.mp3'))
 }
 
 function reset(){
@@ -121,6 +137,10 @@ function reset(){
   died = false
 
   played = false
+
+  easy = false
+  normal = false
+  hard = false
 }
 
 function backDrop(){
@@ -133,7 +153,7 @@ function backDrop(){
 function easyOne(){
   switch(e){
     case 0:
-life()
+
       break
       case 1:
     
@@ -143,10 +163,26 @@ life()
       ready.update()
       ready.render()
        if(ready.pressed === true){
-        let randomScale = random(scales)
+         if(easy === true){
+         let index = Math.floor(random(8,15))
+        let randomScale = scales[index]
     randomScale.play()
     played = true
       }
+         if(normal === true){
+         let index = Math.floor(random(0,15))
+        let randomScale = scales[index]
+    randomScale.play()
+    played = true
+      }
+         if(hard === true){
+         let index = Math.floor(random(0,22))
+        let randomScale = scales[index]
+    randomScale.play()
+    played = true
+      }
+       } 
+      
       break
       case 3:
       frameRate(20)
@@ -238,14 +274,17 @@ function draw() {
       }
       if(easyP.pressed === true){
         reset()
+        easy = true
         menu = 4
       }
       if(normalP.pressed === true){
         reset()
+        normal = true
         menu = 5
       }
       if(hardP.pressed === true){
         reset()
+        hard = true
         menu = 6
       }
       break
@@ -298,6 +337,7 @@ function draw() {
     case 4: //easy (1 player)
     backDrop()
 
+      life()
       easyOne()
       back.update()
       back.render()
@@ -322,8 +362,22 @@ function draw() {
     case 5: //normal (1 player)
     backDrop()
 
+      life()
+      easyOne()
       back.update()
       back.render()
+       if(heart > 4){
+        e = 2
+      }
+      if(played === true){
+        e = 3
+      }
+      if(heart > 4 && died === true){
+        menu = 10
+      }
+       if(keyIsPressed){
+        heart = heart + 1
+      }
       if(back.pressed === true){
         menu = 0
       }
@@ -331,8 +385,23 @@ function draw() {
     case 6: //hard (1 player)
     backDrop()
 
+      life()
+      easyOne()
       back.update()
       back.render()
+
+       if(heart > 4){
+        e = 2
+      }
+      if(played === true){
+        e = 3
+      }
+      if(heart > 4 && died === true){
+        menu = 10
+      }
+       if(keyIsPressed){
+        heart = heart + 1
+      }
       if(back.pressed === true){
         menu = 0
       }
