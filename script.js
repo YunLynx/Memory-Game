@@ -85,6 +85,9 @@ function setup() {
   
   instruction = new button(width/2, height/2 + 150, 120, 30, "Instruction", 101, 168, 86, 0)
   back = new button(width/2 - 300, height/2 - 180, 120, 30, "Back", 101, 168, 86, 0)
+  home = new button (width/2 - 100, height/2 + 150, 120, 30, "Home", 101, 168, 86, 0)
+
+  restart = new button(width/2 + 100, height/2 + 150, 120, 30, "Restart", 101, 168, 86, 0)
 
 ready = new button(width/2, height/2 + 100, 120, 30, "Ready", 101, 168, 86, 0)
   
@@ -94,7 +97,7 @@ ready = new button(width/2, height/2 + 100, 120, 30, "Ready", 101, 168, 86, 0)
   Fa = new button(width/2 + 110, height/2 + 80, 40, 40, "F", 101, 168, 86, 0)
   Sol = new button(width/2 - 75, height/2 + 150, 40, 40, "G", 101, 168, 86, 0)
   La = new button(width/2, height/2 + 150, 40, 40, "A", 101, 168, 86, 0)
-  Ti = new button(width/2 + 75, height/2 + 150, 40, 40, "B", 101, 168, 86, 0)
+  Si = new button(width/2 + 75, height/2 + 150, 40, 40, "B", 101, 168, 86, 0)
 
   OneHeart = new Hearts(width/2 - 103, height/2 - 180, 20, 217, 25, 11, 1, 50)
   TwoHearts = new Hearts(width/2 - 103, height/2 - 180, 20, 217, 25, 11, 2, 50)
@@ -141,6 +144,14 @@ function reset(){
   easy = false
   normal = false
   hard = false
+
+  mDoPlay = false
+   mRePlay = false
+   mMiPlay = false
+   mFaPlay = false
+  mSolPlay = false
+  mLaPlay = false
+  mSiPlay = false
 }
 
 function backDrop(){
@@ -153,7 +164,7 @@ function backDrop(){
 function easyOne(){
   switch(e){
     case 0:
-
+ life()
       break
       case 1:
     
@@ -164,25 +175,24 @@ function easyOne(){
       ready.render()
        if(ready.pressed === true){
          if(easy === true){
-         let index = Math.floor(random(8,15))
+         let index = Math.floor(random(7,14))
         let randomScale = scales[index]
     randomScale.play()
     played = true
       }
          if(normal === true){
-         let index = Math.floor(random(0,15))
+         let index = Math.floor(random(0,14))
         let randomScale = scales[index]
     randomScale.play()
     played = true
       }
          if(hard === true){
-         let index = Math.floor(random(0,22))
+         let index = Math.floor(random(0,21))
         let randomScale = scales[index]
     randomScale.play()
     played = true
       }
        } 
-      
       break
       case 3:
       frameRate(20)
@@ -198,8 +208,8 @@ function easyOne(){
       Sol.render()
        La.update()
       La.render()
-       Ti.update()
-      Ti.render()
+       Si.update()
+      Si.render()
       break
   }
 }
@@ -280,11 +290,13 @@ function draw() {
       if(normalP.pressed === true){
         reset()
         normal = true
+        heart = 1
         menu = 5
       }
       if(hardP.pressed === true){
         reset()
         hard = true
+        heart = 2
         menu = 6
       }
       break
@@ -337,7 +349,6 @@ function draw() {
     case 4: //easy (1 player)
     backDrop()
 
-      life()
       easyOne()
       back.update()
       back.render()
@@ -348,6 +359,38 @@ function draw() {
       if(played === true){
         e = 3
       }
+      if(scales[7].isPlaying()){
+          mDoPlay = true
+        }
+       if(scales[8].isPlaying()){
+          mRePlay = true
+        }
+      if(scales[9].isPlaying()){
+          mMiPlay = true
+        }
+       if(scales[10].isPlaying()){
+          mFaPlay = true
+        }
+       if(scales[11].isPlaying()){
+          mSolPlay = true
+        }
+       if(scales[12].isPlaying()){
+          mLaPlay = true
+        }
+       if(scales[13].isPlaying()){
+          mSiPlay = true
+        }
+      if(easy === true){
+        if((Do.pressed === true && mDoPlay === true) || (Re.pressed === true && mRePlay === true) || (Mi.pressed === true && mMiPlay === true) || (Fa.pressed === true && mFaPlay === true) || (Sol.pressed === true && mSolPlay === true) || (La.pressed === true && mLaPlay === true) || 
+(Si.pressed === true && mSiPlay === true)){
+          e = 0
+          heart = 4
+          died = true
+        }
+      }
+      if((Do.pressed === true || Re.pressed === true || Mi.pressed === true || Fa.pressed === true || Sol.pressed === true || La.pressed === true || Si.pressed === true) && e === 3){
+        menu = 10
+      }
       if(heart > 4 && died === true){
         menu = 10
       }
@@ -355,14 +398,12 @@ function draw() {
         menu = 0
       }
        if(keyIsPressed){
-        heart = heart + 1
+       heart = heart + 1
       }
-     
       break
     case 5: //normal (1 player)
     backDrop()
-
-      life()
+      
       easyOne()
       back.update()
       back.render()
@@ -385,7 +426,6 @@ function draw() {
     case 6: //hard (1 player)
     backDrop()
 
-      life()
       easyOne()
       back.update()
       back.render()
@@ -435,6 +475,49 @@ function draw() {
       break
     case 10: //easy result (1 player)
      backDrop()
+      frameRate(20)
+      if(heart > 4){
+        fill(0)
+        stroke(0)
+        textSize(60)
+        textAlign(CENTER)
+        text("GAME OVER", width/2, height/2 - 100)
+        home.update()
+        home.render()
+        restart.update()
+        restart.render()
+      }
+      if(heart < 4){
+        fill(0)
+        stroke(0)
+        textSize(60)
+        textAlign(CENTER)
+        text("CLEAR", width/2, height/2 - 100)
+        home.update()
+        home.render()
+        restart.update()
+        restart.render()
+      }
+      if(home.pressed === true){
+        menu = 0
+      }
+      if(restart.pressed === true){
+        if(easy === true){
+          reset()
+          easy = true
+          menu = 4
+        }
+        if(normal === true){
+          reset()
+          normal = true
+          menu = 5
+        }
+        if(hard === true){
+          reset()
+          hard = true
+          menu = 6
+        }
+      }
       break
     case 11: //normal result (1 player)
      backDrop()
