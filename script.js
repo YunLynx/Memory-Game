@@ -1,4 +1,5 @@
 let scales = []
+let chords = []
 
 class button {
 	constructor(x,y,w,h,text,r,g,b,s) {
@@ -130,6 +131,27 @@ scales.push(loadSound('scale/Middle-Si.mp3'))
   scales.push(loadSound('scale/High-Sol.mp3'))
   scales.push(loadSound('scale/High-La.mp3'))
   scales.push(loadSound('scale/High-Si.mp3'))
+
+  chords.push(loadSound('chord/Low-C-Major.mp3'))
+  chords.push(loadSound('chord/Low-D-Major.mp3'))
+  chords.push(loadSound('chord/Low-E-Major.mp3'))
+  chords.push(loadSound('chord/Low-F-Major.mp3'))
+  chords.push(loadSound('chord/Low-G-Major.mp3'))
+  chords.push(loadSound('chord/Low-A-Major.mp3'))
+
+  chords.push(loadSound('chord/Middle-C-Major.mp3'))
+  chords.push(loadSound('chord/Middle-D-Major.mp3'))
+  chords.push(loadSound('chord/Middle-E-Major.mp3'))
+  chords.push(loadSound('chord/Middle-F-Major.mp3'))
+  chords.push(loadSound('chord/Middle-G-Major.mp3'))
+  chords.push(loadSound('chord/Middle-A-Major.mp3'))
+
+  chords.push(loadSound('chord/High-C-Major.mp3'))
+  chords.push(loadSound('chord/High-D-Major.mp3'))
+  chords.push(loadSound('chord/High-E-Major.mp3'))
+  chords.push(loadSound('chord/High-F-Major.mp3'))
+  chords.push(loadSound('chord/High-G-Major.mp3'))
+  chords.push(loadSound('chord/High-A-Major.mp3'))
 }
 
 function reset(){
