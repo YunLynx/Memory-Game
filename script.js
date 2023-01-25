@@ -158,6 +158,8 @@ function reset(){
   heart = 0
 
   e = 0
+
+  clear = 3
   
   died = false
 
@@ -167,6 +169,14 @@ function reset(){
   normal = false
   hard = false
 
+lDoPlay = false
+   lRePlay = false
+   lMiPlay = false
+   lFaPlay = false
+  lSolPlay = false
+  lLaPlay = false
+  lSiPlay = false
+  
   mDoPlay = false
    mRePlay = false
    mMiPlay = false
@@ -174,6 +184,14 @@ function reset(){
   mSolPlay = false
   mLaPlay = false
   mSiPlay = false
+
+  hDoPlay = false
+   hRePlay = false
+   hMiPlay = false
+   hFaPlay = false
+  hSolPlay = false
+  hLaPlay = false
+  hSiPlay = false
 }
 
 function backDrop(){
@@ -187,6 +205,11 @@ function easyOne(){
   switch(e){
     case 0:
  life()
+      textSize(30)
+      textAlign(CENTER)
+      fill(0)
+      stroke(0)
+      text("Clear: "+clear, width/2, height/2 + 170)
       break
       case 1:
     
@@ -232,6 +255,17 @@ function easyOne(){
       La.render()
        Si.update()
       Si.render()
+      break
+  }
+}
+
+function twoPlayers(){
+  switch(t){
+    case 0:
+
+      break
+      case 1:
+
       break
   }
 }
@@ -416,6 +450,9 @@ function draw() {
       if(heart > 4 && died === true){
         menu = 10
       }
+      if(heart < 4 && clear < 1){
+        menu = 10
+      }
       if(back.pressed === true){
         menu = 0
       }
@@ -435,7 +472,63 @@ function draw() {
       if(played === true){
         e = 3
       }
+      if(scales[0].isPlaying()){
+          lDoPlay = true
+        }
+       if(scales[1].isPlaying()){
+          lRePlay = true
+        }
+      if(scales[2].isPlaying()){
+          lMiPlay = true
+        }
+       if(scales[3].isPlaying()){
+          lFaPlay = true
+        }
+       if(scales[4].isPlaying()){
+          lSolPlay = true
+        }
+       if(scales[5].isPlaying()){
+          lLaPlay = true
+        }
+       if(scales[6].isPlaying()){
+          lSiPlay = true
+        }
+      if(scales[7].isPlaying()){
+          mDoPlay = true
+        }
+       if(scales[8].isPlaying()){
+          mRePlay = true
+        }
+      if(scales[9].isPlaying()){
+          mMiPlay = true
+        }
+       if(scales[10].isPlaying()){
+          mFaPlay = true
+        }
+       if(scales[11].isPlaying()){
+          mSolPlay = true
+        }
+       if(scales[12].isPlaying()){
+          mLaPlay = true
+        }
+       if(scales[13].isPlaying()){
+          mSiPlay = true
+        }
+      if(normal === true){
+        if((Do.pressed === true && (mDoPlay === true || lDoPlay === true)) || (Re.pressed === true && (mRePlay === true || lRePlay === true)) || (Mi.pressed === true && (mMiPlay === true || lMiPlay === true)) || (Fa.pressed === true && (mFaPlay === true || lFaPlay === true)) || (Sol.pressed === true && (mSolPlay === true || lSolPlay === true)) || (La.pressed === true && (mLaPlay === true || lLaPlay === true)) || 
+(Si.pressed === true && (mSiPlay === true || lSiPlay === true))){
+          e = 0
+          heart = 4
+          died = true
+        }
+      }
+      if((Do.pressed === true || Re.pressed === true || Mi.pressed === true || Fa.pressed === true || Sol.pressed === true || La.pressed === true || Si.pressed === true) && e === 3){
+        menu = 10
+      }
       if(heart > 4 && died === true){
+        menu = 10
+      }
+       if(heart < 4 && clear < 1){
         menu = 10
       }
        if(keyIsPressed){
@@ -457,6 +550,80 @@ function draw() {
       }
       if(played === true){
         e = 3
+      } 
+      if(scales[0].isPlaying()){
+          lDoPlay = true
+        }
+       if(scales[1].isPlaying()){
+          lRePlay = true
+        }
+      if(scales[2].isPlaying()){
+          lMiPlay = true
+        }
+       if(scales[3].isPlaying()){
+          lFaPlay = true
+        }
+       if(scales[4].isPlaying()){
+          lSolPlay = true
+        }
+       if(scales[5].isPlaying()){
+          lLaPlay = true
+        }
+       if(scales[6].isPlaying()){
+          lSiPlay = true
+        }
+      if(scales[7].isPlaying()){
+          mDoPlay = true
+        }
+       if(scales[8].isPlaying()){
+          mRePlay = true
+        }
+      if(scales[9].isPlaying()){
+          mMiPlay = true
+        }
+       if(scales[10].isPlaying()){
+          mFaPlay = true
+        }
+       if(scales[11].isPlaying()){
+          mSolPlay = true
+        }
+       if(scales[12].isPlaying()){
+          mLaPlay = true
+        }
+       if(scales[13].isPlaying()){
+          mSiPlay = true
+        }
+      if(scales[14].isPlaying()){
+          hDoPlay = true
+        }
+       if(scales[15].isPlaying()){
+          hRePlay = true
+        }
+      if(scales[15].isPlaying()){
+          hMiPlay = true
+        }
+       if(scales[17].isPlaying()){
+          hFaPlay = true
+        }
+       if(scales[18].isPlaying()){
+          hSolPlay = true
+        }
+       if(scales[19].isPlaying()){
+          hLaPlay = true
+        }
+       if(scales[20].isPlaying()){
+          hSiPlay = true
+        }
+      if(hard === true){
+        if((Do.pressed === true && (mDoPlay === true || lDoPlay === true || hDoPlay === true)) || (Re.pressed === true && (mRePlay === true || lRePlay === true || hRePlay === true)) || (Mi.pressed === true && (mMiPlay === true || lMiPlay === true || hMiPlay === true)) || (Fa.pressed === true && (mFaPlay === true || lFaPlay === true || hFaPlay === true)) || (Sol.pressed === true && (mSolPlay === true || lSolPlay === true || hSolPlay === true)) || (La.pressed === true && (mLaPlay === true || lLaPlay === true || hLaPlay === true)) || 
+(Si.pressed === true && (mSiPlay === true || lSiPlay === true || hSiPlay === true))){
+          e = 0
+          heart = 4
+          died = true
+        }
+      }
+      if((Do.pressed === true || Re.pressed === true || Mi.pressed === true || Fa.pressed === true || Sol.pressed === true || La.pressed === true || Si.pressed === true) && e === 3){
+        menu = 10
       }
       if(heart > 4 && died === true){
         menu = 10
