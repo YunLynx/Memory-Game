@@ -75,17 +75,10 @@ function setup() {
   menu = 0
 
   oneP = new button(width/2, height/2 + 50, 120, 30, "1 Player", 101, 168, 86, 0)
-  easyP = new button(width/2, height/2 + 20, 120, 30, "Easy", 101, 168, 86, 0)
-  normalP = new button(width/2, height/2 + 80, 120, 30, "Normal", 101, 168, 86, 0)
-  hardP = new button(width/2, height/2 + 140, 120, 30, "Hard", 101, 168, 86, 0)
   twoP = new button(width/2, height/2 + 100, 120, 30, "2 Players", 101, 168, 86, 0)
   
-  easyPs = new button(width/2, height/2, 120, 30, "Easy", 101, 168, 86, 0)
-  normalPs = new button(width/2, height/2 + 63, 120, 30, "Normal", 101, 168, 86, 0)
-  hardPs = new button(width/2, height/2 + 127, 120, 30, "Hard", 101, 168, 86, 0)
-  
   instruction = new button(width/2, height/2 + 150, 120, 30, "Instruction", 101, 168, 86, 0)
-  back = new button(width/2 - 300, height/2 - 180, 120, 30, "Back", 101, 168, 86, 0)
+  back = new button(width/2 - 330, height/2 - 210, 120, 30, "Back", 101, 168, 86, 0)
   home = new button (width/2 - 100, height/2 + 150, 120, 30, "Home", 101, 168, 86, 0)
 
   restart = new button(width/2 + 100, height/2 + 150, 120, 30, "Restart", 101, 168, 86, 0)
@@ -105,6 +98,18 @@ ready = new button(width/2, height/2 + 100, 120, 30, "Ready", 101, 168, 86, 0)
   ThreeHearts = new Hearts(width/2 - 103, height/2 - 180, 20, 217, 25, 11, 3, 50)
   FourHearts = new Hearts(width/2 - 103, height/2 - 180, 20, 217, 25, 11, 4, 50)
   FiveHearts = new Hearts(width/2 - 103, height/2 - 180, 20, 217, 25, 11, 5, 50)
+
+   leftOneHeart = new Hearts(width/2 - 300, height/2 - 160, 20, 217, 25, 11, 1, 50)
+  leftTwoHearts = new Hearts(width/2 - 300, height/2 - 160, 20, 217, 25, 11, 2, 50)
+  leftThreeHearts = new Hearts(width/2 - 300, height/2 - 160, 20, 217, 25, 11, 3, 50)
+  leftFourHearts = new Hearts(width/2 - 300, height/2 - 160, 20, 217, 25, 11, 4, 50)
+  leftFiveHearts = new Hearts(width/2 - 300, height/2 - 160, 20, 217, 25, 11, 5, 50)
+
+   rightOneHeart = new Hearts(width/2 + 100, height/2 - 160, 20, 217, 25, 11, 1, 50)
+  rightTwoHearts = new Hearts(width/2 + 100, height/2 - 160, 20, 217, 25, 11, 2, 50)
+  rightThreeHearts = new Hearts(width/2 + 100, height/2 - 160, 20, 217, 25, 11, 3, 50)
+  rightFourHearts = new Hearts(width/2 + 100, height/2 - 160, 20, 217, 25, 11, 4, 50)
+  rightFiveHearts = new Hearts(width/2 + 100, height/2 - 160, 20, 217, 25, 11, 5, 50)
 }
 
 function preload(){
@@ -156,18 +161,18 @@ scales.push(loadSound('scale/Middle-Si.mp3'))
 
 function reset(){
   heart = 0
+  leftHeart = 0
+  rightHeart = 0
 
-  e = 0
+  o = 0
+  t = 0
 
   clear = 3
   
   died = false
+  tried = false
 
   played = false
-
-  easy = false
-  normal = false
-  hard = false
 
 lDoPlay = false
    lRePlay = false
@@ -201,8 +206,8 @@ function backDrop(){
   rect(width/2, height/2, 800, 475)
 }
 
-function easyOne(){
-  switch(e){
+function one(){
+  switch(o){
     case 0:
  life()
       textSize(30)
@@ -218,26 +223,12 @@ function easyOne(){
       frameRate(8)
       ready.update()
       ready.render()
-       if(ready.pressed === true){
-         if(easy === true){
-         let index = Math.floor(random(7,14))
-        let randomScale = scales[index]
-    randomScale.play()
-    played = true
-      }
-         if(normal === true){
-         let index = Math.floor(random(0,14))
-        let randomScale = scales[index]
-    randomScale.play()
-    played = true
-      }
-         if(hard === true){
+       if(played === false && ready.pressed === true){
          let index = Math.floor(random(0,21))
         let randomScale = scales[index]
     randomScale.play()
     played = true
       }
-       } 
       break
       case 3:
       frameRate(20)
@@ -259,10 +250,18 @@ function easyOne(){
   }
 }
 
-function twoPlayers(){
+function two(){
   switch(t){
     case 0:
-
+      leftLife()
+      rightLife()
+      //left avatar
+      fill(0)
+	circle(width/2 - 320, height/2 + 150, 40)
+	arc(width/2 - 320, height/2 + 240, 60, 150, radians(180), radians(360))
+      //right avatar
+	circle(width/2 + 320, height/2 + 150, 40)
+	arc(width/2 + 320, height/2 + 240, 60, 150, radians(180), radians(360))
       break
       case 1:
 
@@ -293,6 +292,52 @@ OneHeart.update()
   }
 }
 
+function leftLife(){
+  switch(leftHeart){
+    case 0:
+leftFiveHearts.update()
+      break
+    case 1:
+leftFourHearts.update()
+      break
+    case 2:
+leftThreeHearts.update()
+      break
+    case 3:
+leftTwoHearts.update() 
+      break
+    case 4:
+leftOneHeart.update()
+      break
+    case 5:
+
+      break
+  }
+}
+
+function rightLife(){
+  switch(rightHeart){
+    case 0:
+rightFiveHearts.update()
+      break
+    case 1:
+rightFourHearts.update()
+      break
+    case 2:
+rightThreeHearts.update()
+      break
+    case 3:
+rightTwoHearts.update() 
+      break
+    case 4:
+rightOneHeart.update()
+      break
+    case 5:
+
+      break
+  }
+}
+
 function draw() {
   switch(menu){
     case 0: //home
@@ -310,85 +355,18 @@ function draw() {
       instruction.update()
       instruction.render()
       if(oneP.pressed === true){
-        menu = 1
-      }
-      if(twoP.pressed === true){
+        reset()
         menu = 2
       }
-      if(instruction.pressed === true){
+      if(twoP.pressed === true){
+        reset()
         menu = 3
       }
-      break
-    case 1: //1 player
-     backDrop()
-      fill(0)
-      noStroke()
-      textSize(60)
-      textAlign(CENTER)
-      text("1 Player", width/2, height/2 - 130)
-
-      back.update()
-      back.render()
-      easyP.update()
-      easyP.render()
-      normalP.update()
-      normalP.render()
-      hardP.update()
-      hardP.render()
-      if(back.pressed === true){
-        menu = 0
-      }
-      if(easyP.pressed === true){
-        reset()
-        easy = true
-        menu = 4
-      }
-      if(normalP.pressed === true){
-        reset()
-        normal = true
-        heart = 1
-        menu = 5
-      }
-      if(hardP.pressed === true){
-        reset()
-        hard = true
-        heart = 2
-        menu = 6
+      if(instruction.pressed === true){
+        menu = 1
       }
       break
-    case 2: //2 players
-     backDrop()
-      fill(0)
-      noStroke()
-      textSize(60)
-      textAlign(CENTER)
-      text("2 Players", width/2, height/2 - 130)
-
-      back.update()
-      back.render()
-      easyPs.update()
-      easyPs.render()
-      normalPs.update()
-      normalPs.render()
-      hardPs.update()
-      hardPs.render()
-      if(back.pressed === true){
-        menu = 0
-      }
-      if(easyPs.pressed === true){
-        reset()
-        menu = 7
-      }
-      if(normalPs.pressed === true){
-        reset()
-        menu = 8
-      }
-      if(hardPs.pressed === true){
-        reset()
-        menu = 9
-      }
-      break
-    case 3: //instruction
+    case 1: //instruction
       backDrop()
       fill(0)
       noStroke()
@@ -402,77 +380,20 @@ function draw() {
         menu = 0
       }
       break
-    case 4: //easy (1 player)
+    case 2: //play screen (1 player)
     backDrop()
 
-      easyOne()
+      one()
       back.update()
       back.render()
       
       if(heart > 4){
-        e = 2
+        o = 2
       }
       if(played === true){
-        e = 3
+        o = 3
       }
-      if(scales[7].isPlaying()){
-          mDoPlay = true
-        }
-       if(scales[8].isPlaying()){
-          mRePlay = true
-        }
-      if(scales[9].isPlaying()){
-          mMiPlay = true
-        }
-       if(scales[10].isPlaying()){
-          mFaPlay = true
-        }
-       if(scales[11].isPlaying()){
-          mSolPlay = true
-        }
-       if(scales[12].isPlaying()){
-          mLaPlay = true
-        }
-       if(scales[13].isPlaying()){
-          mSiPlay = true
-        }
-      if(easy === true){
-        if((Do.pressed === true && mDoPlay === true) || (Re.pressed === true && mRePlay === true) || (Mi.pressed === true && mMiPlay === true) || (Fa.pressed === true && mFaPlay === true) || (Sol.pressed === true && mSolPlay === true) || (La.pressed === true && mLaPlay === true) || 
-(Si.pressed === true && mSiPlay === true)){
-          e = 0
-          heart = 4
-          died = true
-        }
-      }
-      if((Do.pressed === true || Re.pressed === true || Mi.pressed === true || Fa.pressed === true || Sol.pressed === true || La.pressed === true || Si.pressed === true) && e === 3){
-        menu = 10
-      }
-      if(heart > 4 && died === true){
-        menu = 10
-      }
-      if(heart < 4 && clear < 1){
-        menu = 10
-      }
-      if(back.pressed === true){
-        menu = 0
-      }
-       if(keyIsPressed){
-       heart = heart + 1
-      }
-      break
-    case 5: //normal (1 player)
-    backDrop()
-      
-      easyOne()
-      back.update()
-      back.render()
-       if(heart > 4){
-        e = 2
-      }
-      if(played === true){
-        e = 3
-      }
-      if(scales[0].isPlaying()){
+       if(scales[0].isPlaying()){
           lDoPlay = true
         }
        if(scales[1].isPlaying()){
@@ -493,86 +414,7 @@ function draw() {
        if(scales[6].isPlaying()){
           lSiPlay = true
         }
-      if(scales[7].isPlaying()){
-          mDoPlay = true
-        }
-       if(scales[8].isPlaying()){
-          mRePlay = true
-        }
-      if(scales[9].isPlaying()){
-          mMiPlay = true
-        }
-       if(scales[10].isPlaying()){
-          mFaPlay = true
-        }
-       if(scales[11].isPlaying()){
-          mSolPlay = true
-        }
-       if(scales[12].isPlaying()){
-          mLaPlay = true
-        }
-       if(scales[13].isPlaying()){
-          mSiPlay = true
-        }
-      if(normal === true){
-        if((Do.pressed === true && (mDoPlay === true || lDoPlay === true)) || (Re.pressed === true && (mRePlay === true || lRePlay === true)) || (Mi.pressed === true && (mMiPlay === true || lMiPlay === true)) || (Fa.pressed === true && (mFaPlay === true || lFaPlay === true)) || (Sol.pressed === true && (mSolPlay === true || lSolPlay === true)) || (La.pressed === true && (mLaPlay === true || lLaPlay === true)) || 
-(Si.pressed === true && (mSiPlay === true || lSiPlay === true))){
-          e = 0
-          heart = 4
-          died = true
-        }
-      }
-      if((Do.pressed === true || Re.pressed === true || Mi.pressed === true || Fa.pressed === true || Sol.pressed === true || La.pressed === true || Si.pressed === true) && e === 3){
-        menu = 10
-      }
-      if(heart > 4 && died === true){
-        menu = 10
-      }
-       if(heart < 4 && clear < 1){
-        menu = 10
-      }
-       if(keyIsPressed){
-        heart = heart + 1
-      }
-      if(back.pressed === true){
-        menu = 0
-      }
-      break
-    case 6: //hard (1 player)
-    backDrop()
-
-      easyOne()
-      back.update()
-      back.render()
-
-       if(heart > 4){
-        e = 2
-      }
-      if(played === true){
-        e = 3
-      } 
-      if(scales[0].isPlaying()){
-          lDoPlay = true
-        }
-       if(scales[1].isPlaying()){
-          lRePlay = true
-        }
-      if(scales[2].isPlaying()){
-          lMiPlay = true
-        }
-       if(scales[3].isPlaying()){
-          lFaPlay = true
-        }
-       if(scales[4].isPlaying()){
-          lSolPlay = true
-        }
-       if(scales[5].isPlaying()){
-          lLaPlay = true
-        }
-       if(scales[6].isPlaying()){
-          lSiPlay = true
-        }
-      if(scales[7].isPlaying()){
+     if(scales[7].isPlaying()){
           mDoPlay = true
         }
        if(scales[8].isPlaying()){
@@ -614,55 +456,42 @@ function draw() {
        if(scales[20].isPlaying()){
           hSiPlay = true
         }
-      if(hard === true){
         if((Do.pressed === true && (mDoPlay === true || lDoPlay === true || hDoPlay === true)) || (Re.pressed === true && (mRePlay === true || lRePlay === true || hRePlay === true)) || (Mi.pressed === true && (mMiPlay === true || lMiPlay === true || hMiPlay === true)) || (Fa.pressed === true && (mFaPlay === true || lFaPlay === true || hFaPlay === true)) || (Sol.pressed === true && (mSolPlay === true || lSolPlay === true || hSolPlay === true)) || (La.pressed === true && (mLaPlay === true || lLaPlay === true || hLaPlay === true)) || 
 (Si.pressed === true && (mSiPlay === true || lSiPlay === true || hSiPlay === true))){
-          e = 0
+          o = 0
           heart = 4
           died = true
         }
+      if((Do.pressed === true || Re.pressed === true || Mi.pressed === true || Fa.pressed === true || Sol.pressed === true || La.pressed === true || Si.pressed === true)){
+        tried = true
       }
-      if((Do.pressed === true || Re.pressed === true || Mi.pressed === true || Fa.pressed === true || Sol.pressed === true || La.pressed === true || Si.pressed === true) && e === 3){
-        menu = 10
+      if(heart > 4 && tried === true){
+        menu = 4
       }
       if(heart > 4 && died === true){
-        menu = 10
+        menu = 4
+      }
+      if(heart < 4 && clear < 1){
+        menu = 4
+      }
+      if(back.pressed === true){
+        menu = 0
       }
        if(keyIsPressed){
-        heart = heart + 1
-      }
-      if(back.pressed === true){
-        menu = 0
+       heart = heart + 1
       }
       break
-    case 7: //easy (2 players)
+    case 3: //play screen (2 players)
     backDrop()
 
+      two()
       back.update()
       back.render()
       if(back.pressed === true){
         menu = 0
       }
       break
-    case 8: //normal (2 players)
-    backDrop()
-
-      back.update()
-      back.render()
-      if(back.pressed === true){
-        menu = 0
-      }
-      break
-    case 9: //hard (2 players)
-    backDrop()
-
-      back.update()
-      back.render()
-      if(back.pressed === true){
-        menu = 0
-      }
-      break
-    case 10: //easy result (1 player)
+    case 4: //result screen(1 player)
      backDrop()
       frameRate(20)
       if(heart > 4){
@@ -691,37 +520,12 @@ function draw() {
         menu = 0
       }
       if(restart.pressed === true){
-        if(easy === true){
           reset()
-          easy = true
-          menu = 4
+          menu = 2
         }
-        if(normal === true){
-          reset()
-          normal = true
-          menu = 5
-        }
-        if(hard === true){
-          reset()
-          hard = true
-          menu = 6
-        }
-      }
       break
-    case 11: //normal result (1 player)
+    case 5: //result screen (2 players)
      backDrop()
-      break
-    case 12: //hard result (1 player)
-     backDrop()
-      break
-    case 13: //easy result (2 players)
-     backDrop()
-      break
-    case 14: //normal result (2 players)
-    backDrop()
-      break
-    case 15: //hard result (2 players)
-    backDrop()
       break
   }
 }
