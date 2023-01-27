@@ -82,13 +82,14 @@ function setup() {
   home = new button (width/2 - 100, height/2 + 150, 120, 30, "Home", 101, 168, 86, 0)
 
   restart = new button(width/2 + 100, height/2 + 150, 120, 30, "Restart", 101, 168, 86, 0)
+  restartPs = new button(width/2 + 100, height/2 + 150, 120, 30, "Restart", 101, 168, 86, 0)
 
 ready = new button(width/2, height/2 + 100, 120, 30, "Ready", 101, 168, 86, 0)
   
-  Do = new button(width/2 - 110, height/2 + 80, 40, 40, "C", 101, 168, 86, 0)
-  Re = new button(width/2 - 40, height/2 + 80, 40, 40, "D", 101, 168, 86, 0)
-  Mi = new button(width/2 + 40, height/2 + 80, 40, 40, "E", 101, 168, 86, 0)
-  Fa = new button(width/2 + 110, height/2 + 80, 40, 40, "F", 101, 168, 86, 0)
+  Do = new button(width/2 - 110, height/2 + 60, 40, 40, "C", 101, 168, 86, 0)
+  Re = new button(width/2 - 40, height/2 + 60, 40, 40, "D", 101, 168, 86, 0)
+  Mi = new button(width/2 + 40, height/2 + 60, 40, 40, "E", 101, 168, 86, 0)
+  Fa = new button(width/2 + 110, height/2 + 60, 40, 40, "F", 101, 168, 86, 0)
   Sol = new button(width/2 - 75, height/2 + 150, 40, 40, "G", 101, 168, 86, 0)
   La = new button(width/2, height/2 + 150, 40, 40, "A", 101, 168, 86, 0)
   Si = new button(width/2 + 75, height/2 + 150, 40, 40, "B", 101, 168, 86, 0)
@@ -197,6 +198,27 @@ lDoPlay = false
   hSolPlay = false
   hLaPlay = false
   hSiPlay = false
+
+ lCmajor = false
+   lDmajor = false
+   lEmajor = false
+   lFmajor = false
+  lGmajor = false
+  lAmajor = false
+  
+ mCmajor = false
+   mDmajor = false
+   mEmajor = false
+   mFmajor = false
+  mGmajor = false
+  mAmajor = false
+  
+   hCmajor = false
+   hDmajor = false
+   hEmajor = false
+   hFmajor = false
+  hGmajor = false
+  hAmajor = false
 }
 
 function backDrop(){
@@ -221,6 +243,11 @@ function one(){
       break
       case 2:
       frameRate(8)
+      fill(0)
+      textAlign(CENTER)
+      textSize(30)
+       text("If you are ready to listen the sound,", width/2, height/2 - 90)
+      text("please click the button,", width/2, height/2 - 40)
       ready.update()
       ready.render()
        if(played === false && ready.pressed === true){
@@ -232,6 +259,10 @@ function one(){
       break
       case 3:
       frameRate(20)
+      fill(0)
+      textAlign(CENTER)
+      textSize(30)
+       text("Which one is the correct answer for the sound?", width/2, height/2 - 80)
       Do.update()
       Do.render()
        Re.update()
@@ -255,13 +286,7 @@ function two(){
     case 0:
       leftLife()
       rightLife()
-      //left avatar
-      fill(0)
-	circle(width/2 - 320, height/2 + 150, 40)
-	arc(width/2 - 320, height/2 + 240, 60, 150, radians(180), radians(360))
-      //right avatar
-	circle(width/2 + 320, height/2 + 150, 40)
-	arc(width/2 + 320, height/2 + 240, 60, 150, radians(180), radians(360))
+     
       break
       case 1:
 
@@ -485,11 +510,19 @@ function draw() {
     backDrop()
 
       two()
+       //left avatar
+      fill(0)
+	circle(width/2 - 320, height/2 + 150, 40)
+	arc(width/2 - 320, height/2 + 240, 60, 150, radians(180), radians(360))
+      //right avatar
+	circle(width/2 + 320, height/2 + 150, 40)
+	arc(width/2 + 320, height/2 + 240, 60, 150, radians(180), radians(360))
       back.update()
       back.render()
       if(back.pressed === true){
         menu = 0
       }
+
       break
     case 4: //result screen(1 player)
      backDrop()
@@ -510,7 +543,7 @@ function draw() {
         stroke(0)
         textSize(60)
         textAlign(CENTER)
-        text("CLEAR", width/2, height/2 - 100)
+        text("GAME CLEAR", width/2, height/2 - 100)
         home.update()
         home.render()
         restart.update()
@@ -526,6 +559,37 @@ function draw() {
       break
     case 5: //result screen (2 players)
      backDrop()
+      if(leftHeart > 4){
+				LeftResult="LOSE"
+				RightResult="WIN"
+			}else if(rightHeart > 4){
+				LeftResult="WIN"
+				RightResult="LOSE"
+			}else{
+				LeftResult="DRAW"
+				RightResult="DRAW"
+			}
+      
+      textSize(60)
+      textAlign(CENTER)
+      fill(0)
+      stroke(0)
+      text(LeftResult, width/2 - 170,height/2 - 50)
+			text(RightResult, width/2 + 170,height/2 - 50)
+     
+      rect(width/2, height/2 - 50, 3, 250)
+      home.update()
+        home.render()
+       restartPs.update()
+        restartPs.render()
+
+      if(home.pressed === true){
+        menu = 0
+      }
+      if(restartPs.pressed === true){
+          reset()
+          menu = 3
+        }
       break
   }
 }
