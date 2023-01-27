@@ -37,6 +37,7 @@ class button {
       stroke(this.Stroke)
 		}
     rectMode(CENTER)
+    strokeWeight(1)
 		rect(this.posX, this.posY, this.w, this.h)
 		textAlign(CENTER,CENTER)
 		textSize(20)
@@ -63,6 +64,92 @@ class Hearts{
 		circle(this.x + this.radius + (i % this.number) * this.space, this.y, this.radius)
 			triangle(this.x + this.radius/2 + (i % this.number) * this.space, this.y, this.x + this.radius + this.radius/2 + (i % this.number) * this.space, this.y + this.radius/5, this.x + this.radius/2 + (i % this.number) * this.space, this.y + this.radius)
 		}
+	}
+}
+
+      class attack{
+  constructor(x, y, radius, rx, rxSpeed, bx, by){
+    this.x = x
+    this.y = y
+    this.xSpeed = 0
+    this.ySpeed = 0
+    this.radius = radius
+    this.rx = rx
+    this.rxSpeed = rxSpeed
+		this.bx = bx
+		this.by = by
+  }
+  update(){
+    fill(179, 121, 41)
+    noStroke()
+    circle(this.x, this.y, this.radius)
+		
+   if(this.bx < width/2){
+    this.x+=this.xSpeed
+    this.y+=this.ySpeed
+		}else if(this.bx > width/2){
+			this.x-=this.xSpeed
+    this.y+=this.ySpeed
+		}
+
+    rectMode(CENTER)
+    noFill()
+    stroke(0)
+    strokeWeight(2)
+    rect(this.bx, this.by, 150, 15)
+		fill(25, 51, 168)
+	noStroke()
+	rect(this.bx + 40, this.by, 40, 13)
+		fill('red')
+	rect(this.bx + 40, this.by, 7, 13)
+    rectMode(CORNER)
+    fill(87, 5, 117)
+    rect(this.rx, this.by - 7.5, 3, 25)
+    this.rx+=this.rxSpeed
+		
+			if(this.rx > this.bx + 75){
+		this.rxSpeed = -3
+	}
+	if(this.rx < this.bx - 75){
+		this.rxSpeed = +3
+	}
+	if(keyIsPressed){
+		this.rxSpeed = 0
+	}
+		if(keyIsPressed && ((this.rx > this.bx + 20 && this.rx < this.bx + 32.5) || (this.rx > this.bx + 47.5 && this.rx < this.bx + 60))){
+		this.xSpeed = 4
+	  this.ySpeed = 0.4
+	}
+	
+	if(keyIsPressed && this.rx > this.bx + 32.5 && this.rx < this.bx + 47.5){
+		this.xSpeed = 4
+	}
+  }
+	hit(){
+    if(this.bx > width/2){
+		if(this.x < width/2 - 290 && this.y > height/2 + 180 && this.y < height/2 + 240){
+      leftHeart = leftHeart + 1
+      t = 0
+      this.xSpeed = 0
+      this.ySpeed = 0
+		}else if(this.x < width/2 - 290 && this.y > height/2 + 130 && this.y < height/2 + 170){
+      leftHeart = leftHeart + 2
+      t = 0
+      this.xSpeed = 0
+    }
+    }
+     if(this.bx < width/2){
+		if(this.x > width/2 + 290 && this.y > height/2 + 180 && this.y < height/2 + 240){
+      rightHeart = rightHeart + 1
+      t = 0
+      this.xSpeed = 0
+      this.ySpeed = 0
+		}else if(this.x > width/2 + 290 && this.y > height/2 + 130 && this.y < height/2 + 170){
+      rightHeart = rightHeart + 2
+      t = 0
+      this.xSpeed = 0
+    }
+    }
 	}
 }
         
@@ -111,6 +198,9 @@ ready = new button(width/2, height/2 + 100, 120, 30, "Ready", 101, 168, 86, 0)
   rightThreeHearts = new Hearts(width/2 + 100, height/2 - 160, 20, 217, 25, 11, 3, 50)
   rightFourHearts = new Hearts(width/2 + 100, height/2 - 160, 20, 217, 25, 11, 4, 50)
   rightFiveHearts = new Hearts(width/2 + 100, height/2 - 160, 20, 217, 25, 11, 5, 50)
+
+  left = new attack(width/2 - 250, height/2 + 150, 30, width/2 - 200, 3, width/2 - 200, height/2 + 200)
+  right = new attack(width/2 + 250, height/2 + 150, 30, width/2 + 200, 3, width/2 + 200, height/2 + 200)
 }
 
 function preload(){
@@ -284,12 +374,18 @@ function one(){
 function two(){
   switch(t){
     case 0:
-      leftLife()
-      rightLife()
      
       break
       case 1:
 
+      break
+      case 2:
+     left.update()
+      left.hit()
+      break
+      case 3:
+     right.update()
+      right.hit()
       break
   }
 }
@@ -510,6 +606,8 @@ function draw() {
     backDrop()
 
       two()
+      leftLife()
+      rightLife()
        //left avatar
       fill(0)
 	circle(width/2 - 320, height/2 + 150, 40)
@@ -517,6 +615,7 @@ function draw() {
       //right avatar
 	circle(width/2 + 320, height/2 + 150, 40)
 	arc(width/2 + 320, height/2 + 240, 60, 150, radians(180), radians(360))
+
       back.update()
       back.render()
       if(back.pressed === true){
