@@ -277,6 +277,10 @@ ready = new button(width/2, height/2 + 100, 120, 30, "Ready", 101, 168, 86, 0)
 
   left = new attack(width/2 - 250, height/2 + 150, 30, width/2 - 200, 3, width/2 - 200, height/2 + 200)
   right = new attack(width/2 + 250, height/2 + 150, 30, width/2 + 200, 3, width/2 + 200, height/2 + 200)
+
+  for(let i = 0; i < 16; i++){
+boxes.push(new box())
+}
 }
 
 function preload(){
@@ -371,10 +375,7 @@ lDoPlay = false
   mGmajor = false
   mAmajor = false
 
- for(let i = 0; i < 16; i++){
-boxes.push(new box())
-}
-    boxes.forEach(box => box.state = hiddenState)
+ boxes.forEach(box => box.state = hiddenState)
 }
 
 function backDrop(){
@@ -395,7 +396,7 @@ function one(){
       stroke(0)
       text("Clear: "+ success, width/2, height/2 + 170)
 
-     boxes.forEach((box,i)=>{
+    boxes.forEach((box,i)=>{
 		box.x = width/2 - 90 + (i%row)*gap
 		box.y = height/2 - 90 + Math.floor(i/row)*gap
 		
@@ -616,7 +617,6 @@ boxes.forEach(box => box.state = revealedState)
 		c.forEach(box => box.state = hiddenState)
 		speed = 0
 		s = 0
-		frameRate(20)
 	}
 	if(tried === true){
 		c.forEach(box => box.isOn = false)
@@ -696,9 +696,6 @@ boxes.push(new box())
     
       if(back.pressed === true){
         menu = 0
-      }
-       if(keyIsPressed){
-       heart = heart + 1
       }
       break
     case 3: //play screen (2 players)
