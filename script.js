@@ -33,7 +33,7 @@ class box{
 		rect(this.x, this.y, 40, 40)
 	}
 	update(){
-			if(show === true && mouseIsPressed && mouseX >= this.x && mouseX <= this.x + 40 && mouseY >= this.y && mouseY <= this.y + 40){
+			if(show === true && mouseIsPressed && mouseX >= this.x - 20 && mouseX <= this.x + 20 && mouseY >= this.y - 20 && mouseY <= this.y + 20){
 			this.clicked = true
 		}else {
 			this.clicked = false
@@ -689,9 +689,13 @@ boxes.push(new box())
       }
       
       if(heart > 4){
-      if(tried === true || died === true ||  success < 1){
+      if(tried === true || died === true){
         menu = 4
       }
+      }
+
+      if(success < 1){
+         menu = 4
       }
     
       if(back.pressed === true){
