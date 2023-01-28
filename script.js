@@ -1,5 +1,71 @@
 let scales = []
 let chords = []
+let boxes = []
+
+class box{
+	constructor(x, y, isOn, state){
+		this.isOn = isOn
+		this.state = state
+		this.x = x
+		this.y = y
+		this.clicked = false
+		this.isClear = false
+	}
+	draw(x,y){
+		switch(this.state){
+			case hiddenState:
+				fill(0)
+				break
+			case revealedState:
+				if(this.isOn){
+				fill(255)
+				}else{
+					fill(0)
+				}
+				break
+			case wrongState:
+				fill(200,0,0)
+				break
+			case correctState:
+				fill(23,212,17)
+				break
+		}
+		rect(this.x, this.y, 40, 40)
+	}
+	update(){
+			if(show === true && mouseIsPressed && mouseX >= this.x && mouseX <= this.x + 40 && mouseY >= this.y && mouseY <= this.y + 40){
+			this.clicked = true
+		}else {
+			this.clicked = false
+		}
+		}
+		render(){
+		if(this.clicked === true && this.isOn === true && this.isClear === false){
+	  this.state = revealedState
+			this.isClear = true
+			right = right + 1
+		}else if(this.clicked === true && this.isClear === false){
+			this.state = 2
+      this.isClear = true
+      wspeed = 1
+      heart = heart + 1
+		}else if(w < 1 || p < 1){
+			boxes.forEach(box => box.state = hiddenState)
+	    this.isOn = false
+			this.isClear = false
+			
+			s = 25
+			speed = 1
+			show = false
+			tried = true
+		}else if(right > 5){
+			c.forEach(box => box.state = correctState)
+			pspeed = 1
+			right = 0
+      success = success - 1
+		}
+}
+}
 
 class button {
 	constructor(x,y,w,h,text,r,g,b,s) {
@@ -152,6 +218,13 @@ class Hearts{
     }
 	}
 }
+
+const hiddenState = 0
+const revealedState = 1
+const wrongState = 2
+const correctState = 3
+const row = 4
+const gap = 60
         
 function setup() {
   const width = 900
@@ -160,6 +233,9 @@ function setup() {
   background(255);
   
   menu = 0
+
+  leftTurn = true
+  rightTurn = false
 
   oneP = new button(width/2, height/2 + 50, 120, 30, "1 Player", 101, 168, 86, 0)
   twoP = new button(width/2, height/2 + 100, 120, 30, "2 Players", 101, 168, 86, 0)
@@ -177,9 +253,9 @@ ready = new button(width/2, height/2 + 100, 120, 30, "Ready", 101, 168, 86, 0)
   Re = new button(width/2 - 40, height/2 + 60, 40, 40, "D", 101, 168, 86, 0)
   Mi = new button(width/2 + 40, height/2 + 60, 40, 40, "E", 101, 168, 86, 0)
   Fa = new button(width/2 + 110, height/2 + 60, 40, 40, "F", 101, 168, 86, 0)
-  Sol = new button(width/2 - 75, height/2 + 150, 40, 40, "G", 101, 168, 86, 0)
-  La = new button(width/2, height/2 + 150, 40, 40, "A", 101, 168, 86, 0)
-  Si = new button(width/2 + 75, height/2 + 150, 40, 40, "B", 101, 168, 86, 0)
+  Sol = new button(width/2 - 75, height/2 + 130, 40, 40, "G", 101, 168, 86, 0)
+  La = new button(width/2, height/2 + 130, 40, 40, "A", 101, 168, 86, 0)
+  Si = new button(width/2 + 75, height/2 + 130, 40, 40, "B", 101, 168, 86, 0)
 
   OneHeart = new Hearts(width/2 - 103, height/2 - 180, 20, 217, 25, 11, 1, 50)
   TwoHearts = new Hearts(width/2 - 103, height/2 - 180, 20, 217, 25, 11, 2, 50)
@@ -219,14 +295,6 @@ scales.push(loadSound('scale/Middle-Fa.mp3'))
 scales.push(loadSound('scale/Middle-Sol.mp3'))
 scales.push(loadSound('scale/Middle-La.mp3'))
 scales.push(loadSound('scale/Middle-Si.mp3'))
-  
-  scales.push(loadSound('scale/High-Do.mp3'))
-  scales.push(loadSound('scale/High-Re.mp3'))
-  scales.push(loadSound('scale/High-Mi.mp3'))
-  scales.push(loadSound('scale/High-Fa.mp3'))
-  scales.push(loadSound('scale/High-Sol.mp3'))
-  scales.push(loadSound('scale/High-La.mp3'))
-  scales.push(loadSound('scale/High-Si.mp3'))
 
   chords.push(loadSound('chord/Low-C-Major.mp3'))
   chords.push(loadSound('chord/Low-D-Major.mp3'))
@@ -241,13 +309,6 @@ scales.push(loadSound('scale/Middle-Si.mp3'))
   chords.push(loadSound('chord/Middle-F-Major.mp3'))
   chords.push(loadSound('chord/Middle-G-Major.mp3'))
   chords.push(loadSound('chord/Middle-A-Major.mp3'))
-
-  chords.push(loadSound('chord/High-C-Major.mp3'))
-  chords.push(loadSound('chord/High-D-Major.mp3'))
-  chords.push(loadSound('chord/High-E-Major.mp3'))
-  chords.push(loadSound('chord/High-F-Major.mp3'))
-  chords.push(loadSound('chord/High-G-Major.mp3'))
-  chords.push(loadSound('chord/High-A-Major.mp3'))
 }
 
 function reset(){
@@ -258,12 +319,27 @@ function reset(){
   o = 0
   t = 0
 
-  clear = 3
+  //time
+  s = 25
+	speed = 1
+
+  w = 10
+	wspeed = 0
+	
+	p = 10
+	pspeed = 0
+
+  success = 3
+  right = 0
   
   died = false
   tried = false
 
   played = false
+
+  show = false
+	tried = false
+  
 
 lDoPlay = false
    lRePlay = false
@@ -281,14 +357,6 @@ lDoPlay = false
   mLaPlay = false
   mSiPlay = false
 
-  hDoPlay = false
-   hRePlay = false
-   hMiPlay = false
-   hFaPlay = false
-  hSolPlay = false
-  hLaPlay = false
-  hSiPlay = false
-
  lCmajor = false
    lDmajor = false
    lEmajor = false
@@ -302,13 +370,11 @@ lDoPlay = false
    mFmajor = false
   mGmajor = false
   mAmajor = false
-  
-   hCmajor = false
-   hDmajor = false
-   hEmajor = false
-   hFmajor = false
-  hGmajor = false
-  hAmajor = false
+
+ for(let i = 0; i < 16; i++){
+boxes.push(new box())
+}
+    boxes.forEach(box => box.state = hiddenState)
 }
 
 function backDrop(){
@@ -322,11 +388,21 @@ function one(){
   switch(o){
     case 0:
  life()
+     
       textSize(30)
       textAlign(CENTER)
       fill(0)
       stroke(0)
-      text("Clear: "+clear, width/2, height/2 + 170)
+      text("Clear: "+ success, width/2, height/2 + 170)
+
+     boxes.forEach((box,i)=>{
+		box.x = width/2 - 90 + (i%row)*gap
+		box.y = height/2 - 90 + Math.floor(i/row)*gap
+		
+		box.draw(box.x,box.y)
+		box.update()
+		box.render()
+	})
       break
       case 1:
     
@@ -341,7 +417,7 @@ function one(){
       ready.update()
       ready.render()
        if(played === false && ready.pressed === true){
-         let index = Math.floor(random(0,21))
+         let index = Math.floor(random(0,14))
         let randomScale = scales[index]
     randomScale.play()
     played = true
@@ -460,6 +536,7 @@ rightOneHeart.update()
 }
 
 function draw() {
+  clear()
   switch(menu){
     case 0: //home
       backDrop()
@@ -503,14 +580,56 @@ function draw() {
       break
     case 2: //play screen (1 player)
     backDrop()
-
+     
       one()
       back.update()
       back.render()
       
-      if(heart > 4){
+  fill(0)
+	text(s, 20, 130)
+	text(w, 60, 130)
+	text(p, 100, 130)
+
+s-=speed
+	w-=wspeed
+	p-=pspeed
+      
+	if(w < 0){
+		w = 10
+		wspeed = 0
+	}
+	
+	if(p < 0){
+		p = 10
+		pspeed = 0
+	}
+      
+      if(s < 0 && show === false){
+		b = shuffle(boxes)
+c = subset(b, 0, 6)
+c.forEach(box => box.isOn = true)
+boxes.forEach(box => box.state = revealedState)
+		s = 15
+		show = true
+	}
+	if(s < 0 && show === true){
+		c.forEach(box => box.state = hiddenState)
+		speed = 0
+		s = 0
+		frameRate(20)
+	}
+	if(tried === true){
+		c.forEach(box => box.isOn = false)
+		tried = false
+	}
+	
+       if(heart > 4){
         o = 2
+        for(let i = 0; i < 16; i++){
+boxes.pop(new box())
+}
       }
+     
       if(played === true){
         o = 3
       }
@@ -556,45 +675,25 @@ function draw() {
        if(scales[13].isPlaying()){
           mSiPlay = true
         }
-      if(scales[14].isPlaying()){
-          hDoPlay = true
-        }
-       if(scales[15].isPlaying()){
-          hRePlay = true
-        }
-      if(scales[15].isPlaying()){
-          hMiPlay = true
-        }
-       if(scales[17].isPlaying()){
-          hFaPlay = true
-        }
-       if(scales[18].isPlaying()){
-          hSolPlay = true
-        }
-       if(scales[19].isPlaying()){
-          hLaPlay = true
-        }
-       if(scales[20].isPlaying()){
-          hSiPlay = true
-        }
-        if((Do.pressed === true && (mDoPlay === true || lDoPlay === true || hDoPlay === true)) || (Re.pressed === true && (mRePlay === true || lRePlay === true || hRePlay === true)) || (Mi.pressed === true && (mMiPlay === true || lMiPlay === true || hMiPlay === true)) || (Fa.pressed === true && (mFaPlay === true || lFaPlay === true || hFaPlay === true)) || (Sol.pressed === true && (mSolPlay === true || lSolPlay === true || hSolPlay === true)) || (La.pressed === true && (mLaPlay === true || lLaPlay === true || hLaPlay === true)) || 
-(Si.pressed === true && (mSiPlay === true || lSiPlay === true || hSiPlay === true))){
+      
+        if((Do.pressed === true && (mDoPlay === true || lDoPlay === true)) || (Re.pressed === true && (mRePlay === true || lRePlay === true)) || (Mi.pressed === true && (mMiPlay === true || lMiPlay === true)) || (Fa.pressed === true && (mFaPlay === true || lFaPlay === true)) || (Sol.pressed === true && (mSolPlay === true || lSolPlay === true)) || (La.pressed === true && (mLaPlay === true || lLaPlay === true)) || (Si.pressed === true && (mSiPlay === true || lSiPlay === true))){
           o = 0
           heart = 4
           died = true
+          for(let i = 0; i < 16; i++){
+boxes.push(new box())
+}
         }
       if((Do.pressed === true || Re.pressed === true || Mi.pressed === true || Fa.pressed === true || Sol.pressed === true || La.pressed === true || Si.pressed === true)){
         tried = true
       }
-      if(heart > 4 && tried === true){
+      
+      if(heart > 4){
+      if(tried === true || died === true ||  success < 1){
         menu = 4
       }
-      if(heart > 4 && died === true){
-        menu = 4
       }
-      if(heart < 4 && clear < 1){
-        menu = 4
-      }
+    
       if(back.pressed === true){
         menu = 0
       }
